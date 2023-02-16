@@ -1,0 +1,11 @@
+﻿@model UserModel
+@{
+	ViewData["Title"] = "Confirm exclusion";
+}
+
+
+<h1 class="display-6">Do you really want to delete the user @Model.Login?</h1>
+<div class="container">
+	<a role="button" asp-controller="User" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-dark">Delete</a>
+	<a role="button" asp-controller="User" asp-action="Management" class="btn btn-danger">Cancel</a>
+</div>

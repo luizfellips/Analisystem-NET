@@ -1,0 +1,25 @@
+﻿@{
+	ViewData["Title"] = "Product Management";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h2 class="display-4 border-bottom">Product Management</h2>
+<ul class="list-group-flush display-6">
+    <li class="list-group-item"><a class="user-link" asp-action="ManageProducts" asp-controller="Product">Products</a></li>
+    <li class="list-group-item"><a class="user-link" asp-action="RegisterProduct" asp-controller="Product">Register a new product</a></li>
+</ul>

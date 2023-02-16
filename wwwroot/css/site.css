@@ -1,0 +1,63 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.navbar {
+    position: relative;
+    border-bottom:1px black solid;
+    margin-bottom:40px;
+    padding-top:15px;
+}
+.navbar .bi {
+    font-size: 5em;
+    padding-right: 0.3em;
+    margin-bottom: 13px;
+}
+
+.navbar a{
+    color:black;
+    transition:0.2s;
+}
+
+.navbar a:hover{
+    color:red;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+}
+
+.user-link{
+    text-decoration:none;
+    color:black;
+    transition:0.3s;
+}
+.user-link:hover{
+    color:red;
+}
+
+.close-alert {
+    position: absolute;
+    right: -10px;
+    top: -15px;
+    border-radius: 15px;
+    width: 30px;
+    height: 31px;
+}

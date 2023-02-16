@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "User Page";
+}
+
+<div class="wrapper">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-3 mb-3">Current User</h1>
+				<p class="display-6 border-bottom">Admin</p>
+
+                <ul class="list-group-flush display-6">
+                    <li class="list-group-item"><a class="user-link" asp-controller="User" asp-action="Management">User Management</a></li>
+                    <li class="list-group-item"><a class="user-link" href="#">Informations</a></li>
+                    <li class="list-group-item"><a class="user-link" href="#">Change my password</a></li>
+                    <li class="list-group-item"><a class="user-link" href="#">Exit Session</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

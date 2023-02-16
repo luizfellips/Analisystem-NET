@@ -1,0 +1,78 @@
+﻿@using Analisystem.Enums;
+@model UserModel
+@{
+    ViewData["Title"] = "Create user";
+}
+<h1 class="display-4 border-bottom mb-4">Create a new user</h1>
+<form asp-controller="User" asp-action="CreateUser" method="post">
+	<div class="row g-3">
+		<div class="col">
+            <div class="mb-3 form-floating">
+                <input type="text" asp-for="Login" class="form-control" placeholder="Specify a login.">
+                <label for="floatingLogin" class="form-label">Login</label>
+                @Html.ValidationMessageFor(x=>x.Login)
+            </div>
+        </div>
+		<div class="col">
+            <div class="mb-3 form-floating">
+
+                <input type="password" asp-for="Password" class="form-control" placeholder="Type your password(do not share this!)">
+                <label for="floatingPassword" class="form-label">Password</label>
+                @Html.ValidationMessageFor(x=>x.Password)
+            </div>
+        </div>
+		<div class="row gx-1">
+			<div class="col mx-2">
+                <div class="mb-3 form-floating">
+
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Insert your name.">
+                    <label for="floatingName" class="form-label">Name</label>
+                    @Html.ValidationMessageFor(x=>x.Name)
+                </div>
+                
+            </div>
+			<div class="col">
+                <div class="mb-3 form-floating">
+                    <input type="email" asp-for="Email" class="form-control" placeholder="Write your E-mail">
+                    <label for="floatingEmail" class="form-label">E-mail</label>
+                    @Html.ValidationMessageFor(x=>x.Email)
+                </div>
+            </div>
+        </div>
+		<div class="row">
+            <div class="mb-3 form-select">
+                <label for="profile" class="form-label">Profile Level</label>
+                <select class="form-control" asp-for="ProfileLevel">
+                    <option value="0">Select</option>
+                    <option value="@AccessLevel.Admin">Administrator</option>
+                    <option value="@AccessLevel.Standard">Standard</option>
+                </select>
+                @Html.ValidationMessageFor(x=>x.ProfileLevel)
+            </div>
+        </div>
+		<div class="row g-1">
+			<div class="col">
+                <div class="mb-3 form-floating">
+                    <input type="text" asp-for="Address" class="form-control" placeholder="(OPTIONAL) inform an address.">
+                    <label for="floatingAddress" class="form-label">Address</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3 form-floating">
+                    <input type="text" asp-for="Phone" class="form-control" placeholder="(OPTIONAL) Type a phone number.">
+                    <label for="floatingPhone" class="form-label">Phone</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3 form-floating">
+                    <input type="text" asp-for="CPF" class="form-control" placeholder="(OPTIONAL) Type your CPF.">
+                    <label for="floatingCPF" class="form-label">CPF</label>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-1">Create</button>
+        <a class="btn btn-secondary" asp-controller="User" asp-action="Management">Cancel</a>
+     </div>
+        
+    
+</form>
