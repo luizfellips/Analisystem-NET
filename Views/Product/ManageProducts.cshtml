@@ -3,7 +3,21 @@
 	ViewData["TempData"] = "Product Management";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["SuccessMessage"]
+    </div>
+}
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
 <h1 class="display-4 mb-3">Product Management</h1>
 <table class="table" id="product-table">
     <thead>
@@ -28,14 +42,14 @@
                     <th scope="row">@product.Id</th>
                     <td>@product.Name</td>
                     <td>@product.Quantity</td>
-                    <td>@product.Price</td>
+                    <td id="productPrice">@product.Price</td>
                     <td>@(product.Purpose == null ? "Not informed" : product.Purpose)</td>
                     <td>@(product.Provider == null ? "Not informed" : product.Provider)</td>
                     <td>@(product.ProviderNumber == null ? "Not informed" : product.ProviderNumber)</td>
                     <td>@product.RegisteredDate</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <a role="button" class="btn btn-dark mx-2" asp-route-id="@product.Id" asp-controller="Product" asp-action="Edit">Edit</a>
+                            <a role="button" class="btn btn-dark mx-2" asp-route-id="@product.Id" asp-controller="Product" asp-action="EditProduct">Edit</a>
                             <a role="button" class="btn btn-danger" asp-route-id="@product.Id" asp-controller="Product" asp-action="ConfirmDelete">Delete</a>
                         </div>
                     </td>

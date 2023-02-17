@@ -9,7 +9,12 @@ $(".close-alert").click(function () {
 $(document).ready(function () {
     getDataTable("#user-table");
     getDataTable("#product-table");
+    formatMoney("productPrice");
 })
+
+function formatMoney(id) {
+    document.getElementById(id).innerText = "$".concat(document.getElementById(id).innerText.replace(".", ","));
+}
 
 function getDataTable(id) {
     $(id).DataTable({

@@ -1,7 +1,8 @@
 using Analisystem.Data;
+using Analisystem.Helper;
 using Analisystem.Repositories;
 using Microsoft.EntityFrameworkCore;
-
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Database");
@@ -11,9 +12,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 builder.Services.AddEntityFrameworkSqlServer().
 	AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString));
-
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IUserSession, UserSession>();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -25,15 +32,29 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
+app.Use(async (context, next) =>
+{
+	var currentThreadCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+	currentThreadCulture.NumberFormat = NumberFormatInfo.InvariantInfo;
+
+	Thread.CurrentThread.CurrentCulture = currentThreadCulture;
+	Thread.CurrentThread.CurrentUICulture = currentThreadCulture;
+
+	await next();
+});
+
+app.UseSession();
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
 	name: "default",
-	pattern: "{controller=Home}/{action=Index}/{id?}");
+	pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

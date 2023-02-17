@@ -60,6 +60,7 @@ namespace Analisystem.Repositories
             productDB.Purpose = product.Purpose;
             productDB.ProviderNumber = product.ProviderNumber;
             productDB.Quantity = product.Quantity;
+            productDB.LastUpdated = DateTime.Now;
 
             _databaseContext.Products.Update(productDB);
             _databaseContext.SaveChanges();

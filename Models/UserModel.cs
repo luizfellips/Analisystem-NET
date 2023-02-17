@@ -30,5 +30,9 @@ namespace Analisystem.Models
 			Password = Password.GenerateHash();
 		}
 
+		public bool ValidatePassword(string value)
+		{
+			return Password == value.GenerateHash();
+		}
 	}
 }

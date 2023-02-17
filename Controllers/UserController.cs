@@ -1,4 +1,5 @@
-﻿using Analisystem.Models;
+﻿using Analisystem.Helper;
+using Analisystem.Models;
 using Analisystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -8,15 +9,18 @@ namespace Analisystem.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IUserSession _userSession;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IUserSession userSession)
         {
             _userRepository = userRepository;
+            _userSession = userSession;
         }
 
         public IActionResult Index()
         {
-            return View();
+            UserModel user = _userSession.GetUserSession();
+            return View(user);
         }
 
         public IActionResult Management()

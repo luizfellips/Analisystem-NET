@@ -1,0 +1,11 @@
+﻿@model ProductModel
+@{
+	ViewData["Title"] = "Confirm exclusion";
+}
+
+
+<h1 class="display-6">Do you really want to delete the product @Model.Name?</h1>
+<div class="container">
+	<a role="button" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-dark">Delete</a>
+	<a role="button" asp-controller="Product" asp-action="ManageProducts" class="btn btn-danger">Cancel</a>
+</div>

@@ -1,0 +1,39 @@
+﻿@model LoginModel
+
+@{
+	Layout = "_LoggedOffLayout";
+	ViewData["Title"] = "Log-in";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h2 class="display-3 pb-2 mb-3 border-bottom">Log-in with your account</h2>
+
+<form asp-controller="Login" asp-action="LoginResult" method="post">
+	<div class="container">
+        <div class="mb-3 form-floating">
+            <input type="text" asp-for="Login" class="form-control" placeholder="Login">
+            <label for="floatingLogin" class="form-label">Login</label>
+            @Html.ValidationMessageFor(x=>x.Login)
+        </div>
+        <div class="mb-3 form-floating">
+            <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+            <label for="floatingPassword" class="form-label">Password</label>
+            @Html.ValidationMessageFor(x=>x.Password)
+        </div>
+		<button type="submit" class="btn btn-dark fs-5 ">Log-in</button>
+	</div>
+</form>

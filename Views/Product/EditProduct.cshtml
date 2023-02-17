@@ -1,6 +1,6 @@
 ﻿@model ProductModel
 @{
-	ViewData["Title"] = "Register new product";
+    ViewData["Title"] = "Edit product";
 }
 @if (TempData["SuccessMessage"] != null)
 {
@@ -17,43 +17,43 @@
         @TempData["ErrorMessage"]
     </div>
 }
-
-<h2 class="display-5 border-bottom mb-3">Register a new product</h2>
-<form asp-controller="Product" asp-action="Register" method="post">
-	<div class="row g-3">
-		<div class="col">
+<h2 class="display-5 border-bottom mb-3">Edit product</h2>
+<form asp-controller="Product" asp-action="EditProduct" method="post">
+    <div class="row g-3">
+        <div class="col">
+			<input type="hidden" asp-for="Id" />
             <div class="mb-3 form-floating">
                 <input type="text" asp-for="Name" class="form-control" placeholder="Name">
                 <label for="floatingName" class="form-label">Name</label>
                 @Html.ValidationMessageFor(x=>x.Name)
             </div>
         </div>
-		<div class="col">
+        <div class="col">
             <div class="mb-3 form-floating">
                 <input type="number" asp-for="Quantity" class="form-control" placeholder="Insert the quantity.">
                 <label for="floatingQuantity" class="form-label">Quantity</label>
                 @Html.ValidationMessageFor(x=>x.Quantity)
             </div>
         </div>
-		<div class="row gx-1">
-			<div class="col mx-2">
+        <div class="row gx-1">
+            <div class="col mx-2">
                 <div class="mb-3 form-floating">
 
-                    <input type="number" asp-for="Price" class="form-control" placeholder="Insert the price." step="any">
+                    <input type="number" asp-for="Price" class="form-control" placeholder="Insert the price." min="1" step="any">
                     <label for="floatingPrice" class="form-label">Price</label>
                     @Html.ValidationMessageFor(x=>x.Price)
                 </div>
-                
+
             </div>
-			<div class="col">
+            <div class="col">
                 <div class="mb-3 form-floating">
                     <input type="text" asp-for="Purpose" class="form-control" placeholder="Write the purpose">
                     <label for="floatingPurpose" class="form-label">Purpose</label>
                 </div>
             </div>
         </div>
-		<div class="row g-1">
-			<div class="col">
+        <div class="row g-1">
+            <div class="col">
                 <div class="mb-3 form-floating">
                     <input type="text" asp-for="Provider" class="form-control" placeholder="Inform a provider">
                     <label for="floatingProvider" class="form-label">Provider</label>
@@ -65,9 +65,7 @@
                     <label for="floatingProviderNumber" class="form-label">Provider Number</label>
                 </div>
             </div>
-        <button type="submit" class="btn btn-primary mb-1">Create</button>
-        <a class="btn btn-secondary" asp-controller="Product" asp-action="Index">Cancel</a>
-     </div>
-        
-    
+            <button type="submit" class="btn btn-primary mb-1">Update</button>
+            <a class="btn btn-secondary" asp-controller="Product" asp-action="ManageProducts">Cancel</a>
+        </div>
 </form>
