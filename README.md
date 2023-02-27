@@ -1,5 +1,5 @@
 # Analisystem
-A system I've developed before, but using .NET Core technology.
+A C.R.U.D system I've developed before, but using .NET Core technology.
 ## Technologies used:
 
 - HTML
