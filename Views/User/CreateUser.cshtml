@@ -59,14 +59,14 @@
             </div>
             <div class="col">
                 <div class="mb-3 form-floating">
-                    <input type="text" asp-for="Phone" class="form-control" placeholder="(OPTIONAL) Type a phone number.">
+                    <input type="text" asp-for="Phone" class="form-control" id="phoneNumber" placeholder="(OPTIONAL) Type a phone number.">
                     <label for="floatingPhone" class="form-label">Phone</label>
                 </div>
             </div>
             <div class="col">
                 <div class="mb-3 form-floating">
-                    <input type="text" asp-for="CPF" class="form-control" placeholder="(OPTIONAL) Type your CPF.">
-                    <label for="floatingCPF" class="form-label">CPF</label>
+                    <input type="text" asp-for="CPF" id="CPFNumber" class="form-control" placeholder="(OPTIONAL) Type your CPF.">
+                    <label for="floatingCPF" key class="form-label">CPF(Do not insert the 2 last digits)</label>
                 </div>
             </div>
         </div>

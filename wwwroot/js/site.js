@@ -9,12 +9,44 @@ $(".close-alert").click(function () {
 $(document).ready(function () {
     getDataTable("#user-table");
     getDataTable("#product-table");
-    formatMoney("productPrice");
+    formatMoney();
+    
+    
 })
 
-function formatMoney(id) {
-    document.getElementById(id).innerText = "$".concat(document.getElementById(id).innerText.replace(".", ","));
+$(document).ready(function () {
+    $(".btn-informations").click(function () {
+        var userId = $(this).attr('user-id');
+        console.log(userId);
+
+        $.ajax({
+            type: 'GET',
+            url: '/User/UserProducts/' + userId,
+            success: function (result) {
+                $("#userProductList").html(result);
+                getDataTable("#product-table-user");
+                formatMoney();
+                $("#ProductUserModal").modal("show");
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        })
+    })
+})
+
+
+
+
+
+function formatMoney() {
+    $("td.productPrice").each(function () {
+        $(this).text("$".concat($(this).text().replace(".", ",")));
+    })
 }
+
+
+
 
 function getDataTable(id) {
     $(id).DataTable({
@@ -45,4 +77,60 @@ function getDataTable(id) {
             }
         }
     });
+}
+
+$(document).ready(function () {
+    $("#phoneNumber").keypress(function () {
+        mask(this, maskPhone);
+    })
+    $("#phoneNumber").blur(function () {
+        mask(this, maskPhone);
+    })
+
+    limitText("#CPFNumber", 9);
+
+    $("#CPFNumber").keypress(function () {
+        mask(this, formatCPFinput);
+    })
+    $("#CPFNumber").blur(function () {
+        mask(this, formatCPFinput);
+    })
+})
+
+function mask(o, f) {
+    setTimeout(function () {
+        var value = f(o.value);
+        if (value != o.value) {
+            o.value = value;
+        }
+    }, 1);
+}
+
+function formatCPFinput(input) {
+    var changedInput = input.replace(/\D/g, "");
+    changedInput = changedInput.replace(/^0/, "");
+    return changedInput;
+}
+
+function maskPhone(object) {
+    var maskedValue = object.replace(/\D/g, "");
+    maskedValue = maskedValue.replace(/^0/, "");
+    if (maskedValue.length > 10) {
+        maskedValue = maskedValue.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+    }
+    else if (maskedValue.length > 5) {
+        maskedValue = maskedValue.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+    }
+    else if (maskedValue.length > 2) {
+        maskedValue = maskedValue.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+    }
+    else {
+        maskedValue = maskedValue.replace(/^(\d*)/, "($1")
+    }
+    return maskedValue;
+}
+
+
+function limitText(field, maxChar) {
+    $(field).attr('maxlength', maxChar);
 }

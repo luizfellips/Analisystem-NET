@@ -9,10 +9,12 @@ namespace Analisystem.Controllers
 	{
 		private readonly IUserRepository _userRepository;
 		private readonly IUserSession _userSession;
-        public LoginController(IUserRepository userRepository, IUserSession userSession)
+		private readonly IEmail _email;
+        public LoginController(IUserRepository userRepository, IUserSession userSession, IEmail email)
         {
             _userRepository = userRepository;
             _userSession = userSession;
+            _email = email;
         }
 
         public IActionResult Index()
@@ -53,5 +55,45 @@ namespace Analisystem.Controllers
                 return RedirectToAction("Index");
             }
         }
+		public IActionResult RedefinePassword()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public IActionResult SendNewPassword(RedefinePasswordModel redefinePasswordModel)
+		{
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					UserModel user = _userRepository.getUserByLoginAndEmail(redefinePasswordModel.Login, redefinePasswordModel.Email);
+					if(user != null)
+					{
+						string newPassword = user.GenerateNewPassword();
+						string message = $"Your new password is: {newPassword}";
+						bool sentMail = _email.Send(user.Email, "New password", message);
+						if (sentMail)
+						{
+							_userRepository.updateUser(user);
+							TempData["SuccessMessage"] = "We sent an email with your new password.";
+						}
+						else
+						{
+                            TempData["ErrorMessage"] = "We could not send an email. Please try again.";
+                        }
+                        return RedirectToAction("Index", "Login");
+                    }
+                    TempData["ErrorMessage"] = "We couldn't redefine your password, verify your credentials and try again.";
+                    return RedirectToAction("RedefinePassword", "Login");
+                }
+				return View("Index");
+			}
+			catch (Exception error)
+			{
+                TempData["ErrorMessage"] = $"Oops! We couldn't update your password. More details on the exception: {error.Message}";
+                return RedirectToAction("Index", "Login");
+            }
+		}
     }
 }

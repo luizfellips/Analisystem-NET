@@ -1,4 +1,5 @@
-﻿using Analisystem.Helper;
+﻿using Analisystem.Filters;
+using Analisystem.Helper;
 using Analisystem.Models;
 using Analisystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -6,15 +7,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Analisystem.Controllers
 {
+    [LoggedFilter]
+
+
     public class UserController : Controller
     {
+
         private readonly IUserRepository _userRepository;
         private readonly IUserSession _userSession;
+        private readonly IProductRepository _productRepository;
 
-        public UserController(IUserRepository userRepository, IUserSession userSession)
+        public UserController(IUserRepository userRepository, IUserSession userSession, IProductRepository productRepository)
         {
             _userRepository = userRepository;
             _userSession = userSession;
+            _productRepository = productRepository;
         }
 
         public IActionResult Index()
@@ -22,23 +29,33 @@ namespace Analisystem.Controllers
             UserModel user = _userSession.GetUserSession();
             return View(user);
         }
-
+        [AdminFilter]
         public IActionResult Management()
         {
             List<UserModel> users = _userRepository.getUsers();
             return View(users);
         }
+        [AdminFilter]
         public IActionResult CreateUser()
         {
             return View();
         }
         [HttpPost]
+        [AdminFilter]
         public IActionResult CreateUser(UserModel user)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if(user.CPF != null)
+                    {
+                        int firstDigit = CpfValidator.getFirstDigit(user.CPF);
+                        user.CPF += firstDigit.ToString();
+                        int secondDigit = CpfValidator.getSecondDigit(user.CPF);
+                        user.CPF += secondDigit.ToString();
+                        user.CPF = CpfValidator.CpfFormatter(user.CPF);
+                    }
                     _userRepository.addUser(user);
                     TempData["SuccessMessage"] = "User added successfully!";
                     return RedirectToAction("Management");
@@ -52,7 +69,7 @@ namespace Analisystem.Controllers
                 return RedirectToAction("Management");
             }
         }
-
+        [AdminFilter]
         public IActionResult Edit(int id)
         {
             UserModel user = _userRepository.getUserByID(id);
@@ -60,6 +77,7 @@ namespace Analisystem.Controllers
         }
 
         [HttpPost]
+        [AdminFilter]
         public IActionResult EditUser(UserNoPasswordModel userWithoutPassword)
         {
             try
@@ -78,6 +96,14 @@ namespace Analisystem.Controllers
                         Phone = userWithoutPassword.Phone,
                         Address = userWithoutPassword.Address,
                     };
+                    if (user.CPF != null)
+                    {
+                        int firstDigit = CpfValidator.getFirstDigit(user.CPF);
+                        user.CPF += firstDigit.ToString();
+                        int secondDigit = CpfValidator.getSecondDigit(user.CPF);
+                        user.CPF += secondDigit.ToString();
+                        user.CPF = CpfValidator.CpfFormatter(user.CPF);
+                    }
                     _userRepository.updateUser(user);
                     TempData["SuccessMessage"] = "User updated successfully!";
                     return RedirectToAction("Management");
@@ -90,13 +116,13 @@ namespace Analisystem.Controllers
                 return RedirectToAction("Management");
             }
         }
-
+        [AdminFilter]
         public IActionResult ConfirmDelete(int id)
         {
 			UserModel user = _userRepository.getUserByID(id);
 			return View(user);
         }
-
+        [AdminFilter]
         public IActionResult Delete(int id)
         {
 			UserModel user = _userRepository.getUserByID(id);
@@ -121,5 +147,11 @@ namespace Analisystem.Controllers
 			}
 			
 		}
+
+        public IActionResult UserProducts(int id)
+        {
+            List<ProductModel> products = _productRepository.getUserProducts(id);
+            return PartialView("_UserProducts", products);
+        }
     }
 }

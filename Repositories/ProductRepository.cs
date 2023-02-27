@@ -25,14 +25,14 @@ namespace Analisystem.Repositories
             return _databaseContext.Products.FirstOrDefault(x => x.Id == id);
         }
 
-        public ProductModel GetProductByNameOrId(string name, int id)
-        {
-            return _databaseContext.Products.FirstOrDefault(x => x.Id == id || x.Name == name);
-        }
-
         public List<ProductModel> getProducts()
         {
             return _databaseContext.Products.ToList();
+        }
+
+        public List<ProductModel> getUserProducts(int userId)
+        {
+            return _databaseContext.Products.Where(x => x.UserId == userId).ToList();
         }
 
         public bool removeProduct(ProductModel product)

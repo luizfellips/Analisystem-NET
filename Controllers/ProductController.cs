@@ -1,21 +1,30 @@
-﻿using Analisystem.Models;
+﻿using Analisystem.Filters;
+using Analisystem.Helper;
+using Analisystem.Models;
 using Analisystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Analisystem.Controllers
 {
-	public class ProductController : Controller
-	{
-		private readonly IProductRepository _productRepository;
+    [LoggedFilter]
 
-        public ProductController(IProductRepository productRepository)
+    public class ProductController : Controller
+	{
+        private readonly IProductRepository _productRepository;
+		private readonly IUserRepository _userRepository;
+        private readonly IUserSession _session;
+
+        public ProductController(IProductRepository productRepository, IUserRepository userRepository, IUserSession session)
         {
             _productRepository = productRepository;
+            _userRepository = userRepository;
+            _session = session;
         }
 
         public IActionResult Index()
 		{
+			
 			return View();
 		}
         public IActionResult RegisterProduct()
@@ -30,23 +39,35 @@ namespace Analisystem.Controllers
 			{
 				if (ModelState.IsValid)
 				{
+					UserModel loggedUser = _session.GetUserSession();
+					product.UserId = loggedUser.Id;
 					_productRepository.addProduct(product);
 					TempData["SuccessMessage"] = $"Product {product.Name} registered successfully!";
 					return RedirectToAction("ManageProducts");
 				}
-				return View(product);
+				return View("RegisterProduct",product);
 			}
 			catch (Exception error)
 			{
 				TempData["ErrorMessage"] = $"We could not register your product. more details on the exception: {error.Message}";
-				return View(product);
-			}
+                return View("RegisterProduct", product);
+            }
 		}
 
         public IActionResult ManageProducts()
         {
-			List<ProductModel> products = _productRepository.getProducts();
-            return View(products);
+            UserModel loggedUser = _session.GetUserSession();
+            if (loggedUser.ProfileLevel != Enums.AccessLevel.Admin)
+            {
+                List<ProductModel> products = _productRepository.getUserProducts(loggedUser.Id);
+                return View(products);
+
+            }
+            else
+			{
+                List<ProductModel> products = _productRepository.getProducts();
+                return View(products);
+            }
         }
 
         public IActionResult EditProduct(int id)

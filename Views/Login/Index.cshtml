@@ -34,6 +34,7 @@
             <label for="floatingPassword" class="form-label">Password</label>
             @Html.ValidationMessageFor(x=>x.Password)
         </div>
-		<button type="submit" class="btn btn-dark fs-5 ">Log-in</button>
+		<button type="submit" class="btn btn-dark fs-5 mb-2">Log-in</button>
+        <a asp-controller="Login" asp-action="RedefinePassword" class="mx-2 mt-3 link-dark text-decoration-none fs-5">Forgot your password?</a>
 	</div>
 </form>

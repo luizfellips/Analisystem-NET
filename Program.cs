@@ -1,4 +1,5 @@
 using Analisystem.Data;
+using Analisystem.Filters;
 using Analisystem.Helper;
 using Analisystem.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,13 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserSession, UserSession>();
+builder.Services.AddScoped<IEmail, Email>();
 builder.Services.AddSession(options =>
 {
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+
 
 var app = builder.Build();
 

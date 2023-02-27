@@ -32,6 +32,7 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Login</th>
+            <th scope="col">Total Products</th>
             <th scope="col">Address</th>
             <th scope="col">Phone</th>
             <th scope="col">CPF</th>
@@ -50,6 +51,11 @@
                 <td>@user.Name</td>
                 <td>@user.Email</td>
                 <td>@user.Login</td>
+                    <td>
+                        <a href="javascript:" user-id="@user.Id" class="btn btn-success btn-sm btn-informations">
+                            @(user.Products != null && user.Products.Any() ? user.Products.Count() : 0)
+                        </a>
+                    </td>
 				<td>@(user.Address == null ? "Not informed" : user.Address)</td>
                 <td>@(user.Phone == null ? "Not informed" : user.Phone)</td>
                 <td>@(user.CPF == null ? "Not informed" : user.CPF)</td>
@@ -67,3 +73,19 @@
 
     </tbody>
 </table>
+
+                <div id="ProductUserModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Products</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="userProductList"></div>
+            </div>
+
+        </div>
+    </div>
+</div>

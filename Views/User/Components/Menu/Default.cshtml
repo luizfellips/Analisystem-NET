@@ -1,0 +1,11 @@
+﻿@model UserModel
+
+<ul class="list-group-flush display-6">
+    @if(Model.ProfileLevel == Analisystem.Enums.AccessLevel.Admin)
+    {
+        <li class="list-group-item"><a class="user-link" asp-controller="User" asp-action="Management">User Management</a></li>
+    }
+    <li class="list-group-item"><a class="user-link btn-informations" href="javascript:" user-id="@Model.Id">Informations</a></li>
+    <li class="list-group-item"><a class="user-link" asp-controller="ChangePassword" asp-action="Index">Change my password</a></li>
+    <li class="list-group-item"><a class="user-link" asp-controller="Login" asp-action="ExitSession">Exit Session</a></li>
+</ul>

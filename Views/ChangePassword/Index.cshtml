@@ -1,0 +1,44 @@
+﻿@model ChangePasswordModel
+
+@{
+    ViewData["Title"] = "Change Password";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" arial-label="close">X</button>
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h2 class="display-3 pb-2 mb-3 border-bottom">Change your password</h2>
+
+<form asp-controller="ChangePassword" asp-action="Change" method="post">
+    <div class="container">
+        <div class="mb-3 form-floating">
+            <input type="password" asp-for="OldPassword" class="form-control" placeholder="OldPassword">
+            <label for="floatingPassword" class="form-label">Old password</label>
+            @Html.ValidationMessageFor(x=>x.OldPassword)
+        </div>
+        <div class="mb-3 form-floating">
+            <input type="password" asp-for="NewPassword" class="form-control" placeholder="NewPassword">
+            <label for="floatingPassword" class="form-label">New password</label>
+            @Html.ValidationMessageFor(x=>x.NewPassword)
+        </div>
+        <div class="mb-3 form-floating">
+            <input type="password" asp-for="ConfirmNewPassword" class="form-control" placeholder="ConfirmNewPassword">
+            <label for="floatingPassword" class="form-label">Confirm new password</label>
+            @Html.ValidationMessageFor(x=>x.ConfirmNewPassword)
+        </div>
+        <button type="submit" class="btn btn-dark fs-5 mb-2">Change</button>
+    </div>
+</form>
+

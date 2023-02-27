@@ -11,6 +11,8 @@ namespace Analisystem.Repositories
         UserModel updateUser(UserModel user);
         UserModel getUserByLogin(string login);
         UserModel getUserByLoginAndEmail(string login, string email);
+        UserModel changePassword(ChangePasswordModel changePasswordModel);
+        
 
 
     }

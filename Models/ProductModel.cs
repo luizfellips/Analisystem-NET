@@ -17,5 +17,8 @@ namespace Analisystem.Models
 
 		public DateTime RegisteredDate { get; set; }
 		public DateTime? LastUpdated { get; set; }
+
+		public int? UserId { get; set; }
+		public UserModel? User { get; set; }
 	}
 }

@@ -1,13 +1,16 @@
-﻿using Analisystem.Models;
+﻿using Analisystem.Filters;
+using Analisystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace Analisystem.Controllers
 {
-	public class HomeController : Controller
+    
+
+    public class HomeController : Controller
 	{
-		
-		public IActionResult Index()
+        [LoggedFilter]
+        public IActionResult Index()
 		{
 			return View();
 		}

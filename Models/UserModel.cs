@@ -23,6 +23,8 @@ namespace Analisystem.Models
 		public DateTime RegisterDate { get; set; }
 		public DateTime? LastUpdated { get; set; }
 
+		public virtual List<ProductModel>? Products { get; set; }
+
 		//methods
 
 		public void SetHash()
@@ -33,6 +35,18 @@ namespace Analisystem.Models
 		public bool ValidatePassword(string value)
 		{
 			return Password == value.GenerateHash();
+		}
+
+		public string GenerateNewPassword()
+		{
+			string newPassword = Guid.NewGuid().ToString().Substring(0,8);
+			Password = newPassword.GenerateHash();
+			return newPassword;
+		}
+
+		public void SetPassword(string value)
+		{
+			Password = value.GenerateHash();
 		}
 	}
 }

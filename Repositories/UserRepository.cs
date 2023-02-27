@@ -1,5 +1,6 @@
 ﻿using Analisystem.Data;
 using Analisystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Analisystem.Repositories
 {
@@ -21,6 +22,20 @@ namespace Analisystem.Repositories
             return user;
         }
 
+        public UserModel changePassword(ChangePasswordModel changePasswordModel)
+        {
+            UserModel userDB = getUserByID(changePasswordModel.Id);
+            if (userDB == null) throw new Exception("An error occurred while updating the user password.");
+            if (!userDB.ValidatePassword(changePasswordModel.OldPassword)) throw new Exception("Old password doesn't match.");
+            if (userDB.ValidatePassword(changePasswordModel.NewPassword)) throw new Exception("New password must be different from the old password.");
+            userDB.SetPassword(changePasswordModel.NewPassword);
+            userDB.LastUpdated = DateTime.Now;
+            _databaseContext.Users.Update(userDB);
+            _databaseContext.SaveChanges();
+            return userDB;
+            
+        }
+
         public UserModel getUserByID(int id)
         {
             return _databaseContext.Users.Find(id);
@@ -38,7 +53,7 @@ namespace Analisystem.Repositories
 
         public List<UserModel> getUsers()
         {
-            return _databaseContext.Users.ToList();
+            return _databaseContext.Users.Include(x => x.Products).ToList();
         }
 
         public bool removeUser(UserModel user)
